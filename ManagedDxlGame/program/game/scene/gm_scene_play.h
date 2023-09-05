@@ -9,6 +9,15 @@ public:
 	ScenePlay();
 	~ScenePlay();
 
+	const int MAP_WALL_NUM = 1;							// 壁の数値
+
+	inline int checkHitMapWall(tnl::Vector3 next_pos) {
+		int y = (int)next_pos.y;
+		int x = (int)next_pos.x;
+
+		return map_data_[y][x];
+	}
+
 	void update(float delta_time) override;
 	void draw() override;
 
@@ -24,18 +33,11 @@ private:
 	int map_chip_y_size_;								// マップチップの縦フレーム数
 	int* gpc_map_chip_hdls_;							// 画像データ格納
 
-	std::string map_data_csv_pass_;						// マップデータのパス
+	std::string map_data_csv_pass_;						// マップCSVデータのパス
 	std::vector< std::vector< int > > map_data_;		// マップデータ
 
 	// ======================================
-	// キャラとマップ壁の当たり判定
+	//      キャラとマップ壁の当たり判定 
 	// ======================================
-	inline bool checkHitMapWall(tnl::Vector3 a_pos,
-		std::vector< std::vector< int > >& map_data) {
-		int y = (int)a_pos.y;
-		int x = (int)a_pos.x;
-
-		return map_data[y][x] == 1 ? true : false;
-	}
 
 };

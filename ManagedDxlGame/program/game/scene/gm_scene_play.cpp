@@ -1,5 +1,5 @@
 #include <vector>
-#include "../../dxlib_ext/dxlib_ext.h"
+#include "../../dxlib_ext/dxlib_ext.h"---------------------------------------------
 #include "gm_scene_play.h"
 
 
@@ -49,8 +49,23 @@ void ScenePlay::update(float delta_time) {
 	if (player_symbol_) {
 		player_symbol_->update(delta_time);
 
-		if (checkHitMapWall(player_symbol_->getNextPos(), map_data_)) {
-			player_symbol_->setNextPos(player_symbol_->getPos());
+		// 当たり判定 (壁)
+		if (checkHitMapWall(player_symbol_->getNextPos()) == MAP_WALL_NUM) {
+			player_symbol_->setColFlg(true);
+		}
+	}
+
+	if (enemy_symbol_) {
+
+		if (player_symbol_->getActionFlg()) {
+			enemy_symbol_->setActionFlg(true);
+		}
+
+		enemy_symbol_->update(delta_time);
+
+		// 当たり判定
+		if (checkHitMapWall(enemy_symbol_->getNextPos()) == MAP_WALL_NUM) {
+			enemy_symbol_->setColFlg(true);
 		}
 	}
 }
@@ -58,6 +73,7 @@ void ScenePlay::update(float delta_time) {
 // シーンプレイの描画
 void ScenePlay::draw() {
 
+	// マップの表示
 	for (int y = 0; y < map_data_.size(); ++y) {
 		for (int x = 0; x < map_data_[y].size(); ++x) {
 			DrawGraph(x * map_chip_width_, y * map_chip_height_, gpc_map_chip_hdls_[ map_data_[y][x] ], true);

@@ -17,6 +17,7 @@ public:
 
 	void update(float delta_time);											// ゲームマネージャーの更新
 	void changeScene(SceneBase* next_scene);								// シーンの切り替えを行う
+	inline SceneBase* getSceneInstance() { return now_scene_; }				// シーンのインスタンスを返す。
 	
 private:
 	GameManager(SceneBase* start_scene);									// コンストラクタ

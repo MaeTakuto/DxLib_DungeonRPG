@@ -55,8 +55,10 @@ PlayerSymbol::PlayerSymbol() {
 
 	pos_ = { 1, 1, 0 };
 	next_pos_ = pos_;
+	col_flg_ = false;
 
 	dir_ = CharaDir::DIR_DOWN;
+	action_flg_ = false;
 }
 
 // デストラクタ
@@ -91,7 +93,7 @@ bool PlayerSymbol::seqIdle(const float delta_time) {
 	if (tnl::Input::IsKeyDown(eKeys::KB_A)) {
 		next_pos_.x -= 1;
 		dir_ = CharaDir::DIR_LEFT;
-		sequence_.change(&PlayerSymbol::seqMove);
+		sequence_.change(&PlayerSymbol::seqCheckWall);
 		return true;
 	}
 
@@ -99,7 +101,7 @@ bool PlayerSymbol::seqIdle(const float delta_time) {
 	if (tnl::Input::IsKeyDown(eKeys::KB_D)) {
 		next_pos_.x += 1;
 		dir_ = CharaDir::DIR_RIGHT;
-		sequence_.change(&PlayerSymbol::seqMove);
+		sequence_.change(&PlayerSymbol::seqCheckWall);
 		return true;
 	}
 
@@ -107,7 +109,7 @@ bool PlayerSymbol::seqIdle(const float delta_time) {
 	if (tnl::Input::IsKeyDown(eKeys::KB_W)) {
 		next_pos_.y -= 1;
 		dir_ = CharaDir::DIR_UP;
-		sequence_.change( &PlayerSymbol::seqMove );
+		sequence_.change( &PlayerSymbol::seqCheckWall);
 		return true;
 	}
 
@@ -115,19 +117,39 @@ bool PlayerSymbol::seqIdle(const float delta_time) {
 	if (tnl::Input::IsKeyDown(eKeys::KB_S)) {
 		next_pos_.y += 1;
 		dir_ = CharaDir::DIR_DOWN;
-		sequence_.change(&PlayerSymbol::seqMove);
+		sequence_.change(&PlayerSymbol::seqCheckWall);
 		return true;
 	}
 	
 	return true;
 }
 
+// 当たり判定の確認
+bool PlayerSymbol::seqCheckWall(const float delta_time) {
+
+	if (col_flg_) {
+		sequence_.change(&PlayerSymbol::seqIdle);
+		next_pos_ = pos_;
+		col_flg_ = false;
+	}
+	else {
+		sequence_.change(&PlayerSymbol::seqMove);
+		action_flg_ = true;
+	}
+
+	return true;
+}
+
 // 移動状態
 bool PlayerSymbol::seqMove(const float delta_time) {
 
+	if (sequence_.isStart()) {
+		action_flg_ = false;
+	}
+
 	if ( abs(next_pos_.x - pos_.x) > 0.1f || abs(next_pos_.y - pos_.y) > 0.1f ) {
-		tnl::DebugTrace("pos_ = %.2f\n", pos_.length());
-		tnl::DebugTrace("next_pos_ - pos_ = %.2f\n", next_pos_.length() - pos_.length());
+		//tnl::DebugTrace("pos_ = %.2f\n", pos_.length());
+		//tnl::DebugTrace("next_pos_ - pos_ = %.2f\n", next_pos_.length() - pos_.length());
 		pos_ += (next_pos_ - pos_) * MOVE_SPEED;
 	}
 	else {
