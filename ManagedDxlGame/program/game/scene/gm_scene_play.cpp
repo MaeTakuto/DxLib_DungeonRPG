@@ -1,12 +1,14 @@
 #include <vector>
-#include "../../dxlib_ext/dxlib_ext.h"---------------------------------------------
+#include "../../dxlib_ext/dxlib_ext.h"
 #include "gm_scene_play.h"
 
 
 // コンストラクタ
 ScenePlay::ScenePlay() {
 	player_symbol_ = new PlayerSymbol();
-	enemy_symbol_ = new EnemySymbol();
+	enemy_symbol_[0] = new EnemySymbol(tnl::Vector3{1, 1, 0});
+	enemy_symbol_[1] = new EnemySymbol(tnl::Vector3{2, 1, 0});
+	enemy_symbol_[2] = new EnemySymbol(tnl::Vector3{3, 1, 0});
 
 	// マップチップの画像のロード
 	gpc_map_chip_hdls_pass_ = "graphics/mapchip.png";
@@ -38,8 +40,11 @@ ScenePlay::~ScenePlay() {
 	delete player_symbol_;
 	player_symbol_ = nullptr;
 
-	delete enemy_symbol_;
-	enemy_symbol_ = nullptr;
+	delete[] enemy_symbol_;
+
+	for (int i = 0; i < 3; ++i) {
+		enemy_symbol_[i] = nullptr;
+	}
 }
 
 // シーンプレイのアップデート
@@ -55,17 +60,19 @@ void ScenePlay::update(float delta_time) {
 		}
 	}
 
-	if (enemy_symbol_) {
+	for (int i = 0; i < 3; ++i) {
+		if (enemy_symbol_[i]) {
 
-		if (player_symbol_->getActionFlg()) {
-			enemy_symbol_->setActionFlg(true);
-		}
+			if (player_symbol_->getActionFlg()) {
+				enemy_symbol_[i]->setActionFlg(true);
+			}
 
-		enemy_symbol_->update(delta_time);
+			enemy_symbol_[i]->update(delta_time);
 
-		// 当たり判定
-		if (checkHitMapWall(enemy_symbol_->getNextPos()) == MAP_WALL_NUM) {
-			enemy_symbol_->setColFlg(true);
+			// 当たり判定
+			if (checkHitMapWall(enemy_symbol_[i]->getNextPos()) == MAP_WALL_NUM) {
+				enemy_symbol_[i]->setColFlg(true);
+			}
 		}
 	}
 }
@@ -81,6 +88,9 @@ void ScenePlay::draw() {
 	}
 
 	if (player_symbol_) player_symbol_->draw();
-	if (enemy_symbol_) enemy_symbol_->draw();
+
+	for (int i = 0; i < 3; ++i) {
+		if (enemy_symbol_) enemy_symbol_[i]->draw();
+	}
 }
 

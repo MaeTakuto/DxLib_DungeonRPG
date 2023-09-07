@@ -11,7 +11,9 @@ GameManager::GameManager(SceneBase* start_scene) {
 
 // ゲームマネージャーのアドレスを返す
 GameManager* GameManager::GetInstance(SceneBase* start_scene) {
+
 	static GameManager* instance = nullptr;
+
 	if (!instance) {
 		instance = new GameManager(start_scene);
 	}

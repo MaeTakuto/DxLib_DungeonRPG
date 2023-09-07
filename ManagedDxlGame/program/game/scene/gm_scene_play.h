@@ -11,11 +11,20 @@ public:
 
 	const int MAP_WALL_NUM = 1;							// 壁の数値
 
-	inline int checkHitMapWall(tnl::Vector3 next_pos) {
-		int y = (int)next_pos.y;
-		int x = (int)next_pos.x;
+	// ======================================
+	//      キャラとマップ壁の当たり判定 
+	// ======================================
+	inline int checkHitMapWall(tnl::Vector3& pos) {
+		int y = (int)pos.y;
+		int x = (int)pos.x;
 
 		return map_data_[y][x];
+	}
+
+	inline bool checkHitChara() {
+
+
+		return true;
 	}
 
 	void update(float delta_time) override;
@@ -23,7 +32,7 @@ public:
 
 private:
 	PlayerSymbol* player_symbol_ = nullptr;				// プレイヤーシンボル
-	EnemySymbol* enemy_symbol_ = nullptr;				// エネミーシンボル
+	EnemySymbol* enemy_symbol_[3] = { nullptr };				// エネミーシンボル
 
 	std::string gpc_map_chip_hdls_pass_;				// 画像パス
 	int map_chip_width_;								// マップチップの幅
@@ -35,9 +44,5 @@ private:
 
 	std::string map_data_csv_pass_;						// マップCSVデータのパス
 	std::vector< std::vector< int > > map_data_;		// マップデータ
-
-	// ======================================
-	//      キャラとマップ壁の当たり判定 
-	// ======================================
 
 };

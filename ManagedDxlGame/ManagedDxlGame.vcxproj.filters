@@ -164,10 +164,7 @@
     <ClCompile Include="program\game\gm_obj\gm_enemy_symbol.cpp">
       <Filter>program\[003] game\gm_obj</Filter>
     </ClCompile>
-    <ClCompile Include="program\game\common\gm_anim_factory.cpp">
-      <Filter>program\[003] game\common</Filter>
-    </ClCompile>
-    <ClCompile Include="program\game\common\gm_animation.cpp">
+    <ClCompile Include="program\game\common\gm_animation_manager.cpp">
       <Filter>program\[003] game\common</Filter>
     </ClCompile>
   </ItemGroup>
@@ -290,10 +287,7 @@
     <ClInclude Include="program\game\gm_obj\gm_enemy_symbol.h">
       <Filter>program\[003] game\gm_obj</Filter>
     </ClInclude>
-    <ClInclude Include="program\game\common\gm_anim_factory.h">
-      <Filter>program\[003] game\common</Filter>
-    </ClInclude>
-    <ClInclude Include="program\game\common\gm_animation.h">
+    <ClInclude Include="program\game\common\gm_animation_manager.h">
       <Filter>program\[003] game\common</Filter>
     </ClInclude>
   </ItemGroup>

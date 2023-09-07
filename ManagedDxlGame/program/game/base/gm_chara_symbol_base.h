@@ -11,14 +11,6 @@ enum class CharaDir {
 	DIR_MAX			// 最大値
 };
 
-/*
-* 
-* for(int i = 0 ; i < static_cast<int>(DIR_MAX) ; ++i){
-* 
-* }
-* 
-*/
-
 const int ANIM_IDLE = 1;	// 待機状態
 
 
@@ -30,8 +22,8 @@ public:
 	virtual void update(float delta_time) = 0;
 	virtual void draw() = 0;
 
-	virtual tnl::Vector3 getPos() = 0;			// キャラの現在の位置を返す。
-	virtual tnl::Vector3 getNextPos() = 0;		// キャラの次の位置を返す。
+	virtual tnl::Vector3& getPos() = 0;			// キャラの現在の位置を返す。
+	virtual tnl::Vector3& getNextPos() = 0;		// キャラの次の位置を返す。
 	virtual bool getActionFlg() = 0;			// キャラが行動しているかを返す。
 	virtual void setColFlg(bool col_flg) = 0;	// キャラに当たり判定セット
 
@@ -42,9 +34,9 @@ protected:
 	tnl::Vector3 next_pos_;				// 移動先の位置
 
 	std::vector< std::vector < int > >
-		gpc_chara_anim_hdls_;			// キャラの画像
+		chara_anim_hdls_;			// キャラの画像
 
-	int** p_gpc_chara_anim_hdls_;		// キャラの画像
+	int** p_chara_anim_hdls_;		// キャラの画像
 
 	bool action_flg_;					// 行動フラグ
 	bool col_flg_;						// 衝突判定

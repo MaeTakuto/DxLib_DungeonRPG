@@ -1,34 +1,36 @@
 #include "../../dxlib_ext/dxlib_ext.h"
 #include "../common/gm_manager.h"
+#include "../common/gm_animation_manager.h"
 #include "../scene/gm_scene_play.h"
 #include "gm_enemy_symbol.h"
 
 
 // コンストラクタ
-EnemySymbol::EnemySymbol() {
+EnemySymbol::EnemySymbol(tnl::Vector3 pos) {
 	// キャラの画像ロード
 	chara_anim_hdls_data_ = tnl::LoadCsv("csv/enemy_gpc_pass.csv");
 
 	// ダブルポインタの場合
-	p_gpc_chara_anim_hdls_ = new int* [ static_cast<int>( CharaDir::DIR_MAX ) ];
+	p_chara_anim_hdls_ = new int* [ static_cast<int>( CharaDir::DIR_MAX ) ];
 
 	for (int i = 0; i < static_cast<int>( CharaDir::DIR_MAX ); ++i) {
-		p_gpc_chara_anim_hdls_[i] = new int[3];
+		p_chara_anim_hdls_[i] = new int[3];
 	}
 
 	for (int i = 0; i < static_cast<int>( CharaDir::DIR_MAX ); ++i) {
-		LoadDivGraph(
-			chara_anim_hdls_data_[0][i].getString().c_str(),
+		p_chara_anim_hdls_[i] = AnimationManager::GetInstance()->loadAnimation(
+			chara_anim_hdls_data_[0][i].getString(),
 			chara_anim_hdls_data_[1][i].getInt(),
 			chara_anim_hdls_data_[2][i].getInt(),
 			chara_anim_hdls_data_[3][i].getInt(),
 			GameManager::GPC_CHIP_WIDTH_SIZE,
-			GameManager::GPC_CHIP_HEIGHT_SIZE,
-			p_gpc_chara_anim_hdls_[i]
+			GameManager::GPC_CHIP_HEIGHT_SIZE
 		);
 	}
 
-	pos_ = { 2, 1, 0 };
+	tnl::DebugTrace("pass = %x\n", p_chara_anim_hdls_[1][1]);
+
+	pos_ = pos;
 	next_pos_ = pos_;
 
 	dir_ = CharaDir::DIR_DOWN;
@@ -38,9 +40,9 @@ EnemySymbol::EnemySymbol() {
 EnemySymbol::~EnemySymbol() {
 
 	for (int i = 0; i < static_cast<int>( CharaDir:: DIR_MAX ); ++i) {
-		delete[] p_gpc_chara_anim_hdls_[i];
+		delete[] p_chara_anim_hdls_[i];
 	}
-	delete[] p_gpc_chara_anim_hdls_;
+	delete[] p_chara_anim_hdls_;
 }
 
 // アップデート
@@ -52,7 +54,7 @@ void EnemySymbol::update(float delta_time) {
 // 描画
 void EnemySymbol::draw() {
 
-	DrawGraph(pos_.x * 32, pos_.y * 32, p_gpc_chara_anim_hdls_[ static_cast<int>( dir_ ) ][ANIM_IDLE], true);
+	DrawGraph(pos_.x * 32, pos_.y * 32, p_chara_anim_hdls_[ static_cast<int>( dir_ ) ][ANIM_IDLE], true);
 }
 
 // 待機状態
@@ -146,7 +148,8 @@ void EnemySymbol::dirChange() {
 
 	// 方向検索
 	for (int i = 0; i < static_cast<int>(CharaDir::DIR_MAX); ++i) {
-		if (scene_play->checkHitMapWall(pos_ + d_pos[i]) == 0) {
+		tnl::Vector3 temp_pos = pos_ + d_pos[i];
+		if (scene_play->checkHitMapWall(temp_pos) == 0) {
 			dir.emplace_back(static_cast<CharaDir>(i));
 		}
 	} 

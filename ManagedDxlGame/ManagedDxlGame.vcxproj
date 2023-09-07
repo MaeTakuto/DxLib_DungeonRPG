@@ -167,8 +167,7 @@
     <ClCompile Include="program\dxlib_ext\dxlib_ext_texture.cpp" />
     <ClCompile Include="program\dxlib_ext\OBJLoader.cpp" />
     <ClCompile Include="program\game\base\gm_chara_symbol_base.cpp" />
-    <ClCompile Include="program\game\common\gm_animation.cpp" />
-    <ClCompile Include="program\game\common\gm_anim_factory.cpp" />
+    <ClCompile Include="program\game\common\gm_animation_manager.cpp" />
     <ClCompile Include="program\game\common\gm_manager.cpp" />
     <ClCompile Include="program\game\common\gm_scene_base.cpp" />
     <ClCompile Include="program\game\gm_main.cpp" />
@@ -205,8 +204,7 @@
     <ClInclude Include="program\dxlib_ext\dxlib_ext_texture.h" />
     <ClInclude Include="program\dxlib_ext\OBJLoader.h" />
     <ClInclude Include="program\game\base\gm_chara_symbol_base.h" />
-    <ClInclude Include="program\game\common\gm_animation.h" />
-    <ClInclude Include="program\game\common\gm_anim_factory.h" />
+    <ClInclude Include="program\game\common\gm_animation_manager.h" />
     <ClInclude Include="program\game\common\gm_manager.h" />
     <ClInclude Include="program\game\common\gm_scene_base.h" />
     <ClInclude Include="program\game\gm_main.h" />

@@ -1,5 +1,6 @@
 #include "../../dxlib_ext/dxlib_ext.h"
 #include "../common/gm_manager.h"
+#include "../common/gm_animation_manager.h"
 #include "gm_player_symbol.h"
 
 
@@ -9,22 +10,21 @@ PlayerSymbol::PlayerSymbol() {
 	chara_anim_hdls_data_ = tnl::LoadCsv("csv/player_gpc_pass.csv");
 
 	// ダブルポインタの場合
-	p_gpc_chara_anim_hdls_ = new int* [ static_cast<int>( CharaDir::DIR_MAX ) ];
+	p_chara_anim_hdls_ = new int*[ static_cast<int>( CharaDir::DIR_MAX ) ];
 
-	for (int i = 0; i < static_cast<int>( CharaDir::DIR_MAX ); ++i) {
-		p_gpc_chara_anim_hdls_[i] = new int[3];
+	for (int i = 0; i < static_cast<int>(CharaDir::DIR_MAX); ++i) {
+		p_chara_anim_hdls_[i] = new int[3];
 	}
 
 	for (int i = 0; i < static_cast<int>( CharaDir::DIR_MAX ); ++i) {
-		LoadDivGraph(
-			chara_anim_hdls_data_[0][i].getString().c_str(),
+
+		p_chara_anim_hdls_[i] = AnimationManager::GetInstance()->loadAnimation(
+			chara_anim_hdls_data_[0][i].getString(),
 			chara_anim_hdls_data_[1][i].getInt(),
 			chara_anim_hdls_data_[2][i].getInt(),
 			chara_anim_hdls_data_[3][i].getInt(),
 			GameManager::GPC_CHIP_WIDTH_SIZE,
-			GameManager::GPC_CHIP_HEIGHT_SIZE,
-			p_gpc_chara_anim_hdls_[i]
-		);
+			GameManager::GPC_CHIP_HEIGHT_SIZE);
 	}
 
 	/*
@@ -65,9 +65,9 @@ PlayerSymbol::PlayerSymbol() {
 PlayerSymbol::~PlayerSymbol() {
 	
 	for (int i = 0; i < static_cast<int>( CharaDir::DIR_MAX ); ++i) {
-		delete[] p_gpc_chara_anim_hdls_[i];
+		delete[] p_chara_anim_hdls_[i];
 	}
-	delete[] p_gpc_chara_anim_hdls_;
+	delete[] p_chara_anim_hdls_;
 }
 
 // アップデート
@@ -79,7 +79,7 @@ void PlayerSymbol::update(float delta_time) {
 // 描画
 void PlayerSymbol::draw() {
 
-	DrawGraph( pos_.x * 32, pos_.y * 32, p_gpc_chara_anim_hdls_[ static_cast<int>( dir_ ) ][ ANIM_IDLE ], true );
+	DrawGraph( pos_.x * 32, pos_.y * 32, p_chara_anim_hdls_[ static_cast<int>( dir_ ) ][ ANIM_IDLE ], true );
 
 	DrawStringEx(10, 10, -1, "pos_x = %.2f, pos_y = %.2f", pos_.x, pos_.y);
 
