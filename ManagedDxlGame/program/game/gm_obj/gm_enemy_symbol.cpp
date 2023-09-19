@@ -34,6 +34,7 @@ EnemySymbol::EnemySymbol(tnl::Vector3 pos) {
 	next_pos_ = pos_;
 
 	dir_ = CharaDir::DIR_DOWN;
+	act_ = CharaAct::WAIT;
 }
 
 // デストラクタ
@@ -59,8 +60,11 @@ void EnemySymbol::draw() {
 
 // 待機状態
 bool EnemySymbol::seqIdle(const float delta_time) {
+	if ( act_ == CharaAct::END ) {
+		act_ = CharaAct::WAIT;
+	}
 
-	if (action_flg_) {
+	if (act_ == CharaAct::BEGIN) {
 		// 移動先のポジションセット
 		switch (dir_) {
 		case CharaDir::DIR_DOWN:
@@ -78,7 +82,6 @@ bool EnemySymbol::seqIdle(const float delta_time) {
 		}
 
 		sequence_.change(&EnemySymbol::seqAction);
-		action_flg_ = false;
 	}
 
 	return true;
@@ -97,6 +100,8 @@ bool EnemySymbol::seqCheckWall(const float delta_time) {
 
 // 移動状態
 bool EnemySymbol::seqAction(const float delta_time) {
+	
+	act_ = CharaAct::ACT;
 
 	// 当たっているかどうか
 	if (col_flg_) {
@@ -123,13 +128,14 @@ bool EnemySymbol::seqDirChange(const float delta_time) {
 void EnemySymbol::move() {
 
 	if (abs(next_pos_.x - pos_.x) > 0.1f || abs(next_pos_.y - pos_.y) > 0.1f) {
-		tnl::DebugTrace("pos_ = %.2f\n", pos_.length());
-		tnl::DebugTrace("next_pos_ - pos_ = %.2f\n", next_pos_.length() - pos_.length());
+		//tnl::DebugTrace("pos_ = %.2f\n", pos_.length());
+		//tnl::DebugTrace("next_pos_ - pos_ = %.2f\n", next_pos_.length() - pos_.length());
 		pos_ += (next_pos_ - pos_) * MOVE_SPEED;
 	}
 	else {
 		pos_ = next_pos_;
 		sequence_.change(&EnemySymbol::seqIdle);
+		act_ = CharaAct::END;
 	}
 }
 
@@ -149,16 +155,18 @@ void EnemySymbol::dirChange() {
 	// 方向検索
 	for (int i = 0; i < static_cast<int>(CharaDir::DIR_MAX); ++i) {
 		tnl::Vector3 temp_pos = pos_ + d_pos[i];
-		if (scene_play->checkHitMapWall(temp_pos) == 0) {
+		if (scene_play->getMapNum(temp_pos) == 0) {
 			dir.emplace_back(static_cast<CharaDir>(i));
 		}
 	} 
 
+	if (dir.size() == 0) return;
 	int r = GetRand(static_cast<int>(dir.size() - 1));
 	tnl::DebugTrace("r = %d\n", r);
 
 	dir_ = dir[r];
 
 	sequence_.change(&EnemySymbol::seqIdle);
+	act_ = CharaAct::END;
 
 }

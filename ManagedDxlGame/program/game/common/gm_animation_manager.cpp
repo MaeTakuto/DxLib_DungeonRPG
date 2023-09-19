@@ -9,7 +9,7 @@ AnimationManager::AnimationManager() {
 
 // デストラクタ
 AnimationManager::~AnimationManager() {
-
+	
 }
 
 // インスタンスを返す。
@@ -43,8 +43,14 @@ int* AnimationManager::loadAnimation(std::string& anim_hdl_pass,
 }
 
 // アニメーションの削除
-void AnimationManager::deleteAnimation(std::string& anim_hdl_pass) {
+void AnimationManager::deleteAnimation(std::string& anim_hdl_pass, int all_size) {
 
+	auto it = anim_hdl_container_.find(anim_hdl_pass);
+
+	if (it != anim_hdl_container_.end()) {
+		for(int i = 0; i < all_size; ++i) 
+		DeleteGraph(it->second[i]);
+	}
 }
 
 // アニメーションのロード

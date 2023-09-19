@@ -9,40 +9,52 @@ public:
 	ScenePlay();
 	~ScenePlay();
 
-	const int MAP_WALL_NUM = 1;							// 壁の数値
+	static constexpr int MAP_GROUND_NUM = 0;						// 床の番号
+	static constexpr int MAP_WALL_NUM = 1;							// 壁の番号
+	static constexpr int MAP_PLAYER_NUM = 2;						// プレイヤーの番号
+	static constexpr int MAP_ENEMY_NUM = 3;							// エネミーの番号
+
+	static const int ENEMY_MAX_NUM = 3;								// エネミーの最大生成数
+
+	void update(float delta_time) override;							// シーンプレイのアップデート
+	void draw() override;											// シーンプレイ描画
 
 	// ======================================
-	//      キャラとマップ壁の当たり判定 
+	//      マップの番号を返す
 	// ======================================
-	inline int checkHitMapWall(tnl::Vector3& pos) {
+	inline int getMapNum(const tnl::Vector3& pos) {
 		int y = (int)pos.y;
 		int x = (int)pos.x;
 
 		return map_data_[y][x];
 	}
 
-	inline bool checkHitChara() {
+	// ======================================
+	//         マップ上のデータの更新
+	// ======================================
+	inline void setMapData(const tnl::Vector3& pos, int num) {
+		int y = (int)pos.y;
+		int x = (int)pos.x;
 
-
-		return true;
+		map_data_[y][x] = num;
 	}
 
-	void update(float delta_time) override;
-	void draw() override;
-
 private:
-	PlayerSymbol* player_symbol_ = nullptr;				// プレイヤーシンボル
-	EnemySymbol* enemy_symbol_[3] = { nullptr };				// エネミーシンボル
+	PlayerSymbol* player_symbol_ = nullptr;						// プレイヤーシンボル
+	EnemySymbol* enemy_symbol_[ENEMY_MAX_NUM] = { nullptr };	// エネミーシンボル
 
-	std::string gpc_map_chip_hdls_pass_;				// 画像パス
-	int map_chip_width_;								// マップチップの幅
-	int map_chip_height_;								// マップチップの高さ
-	int map_chip_all_size_;								// マップチップの総フレーム数
-	int map_chip_x_size_;								// マップチップの横フレーム数
-	int map_chip_y_size_;								// マップチップの縦フレーム数
-	int* gpc_map_chip_hdls_;							// 画像データ格納
+	bool action_flg_ = false;
 
-	std::string map_data_csv_pass_;						// マップCSVデータのパス
-	std::vector< std::vector< int > > map_data_;		// マップデータ
+	std::string gpc_map_chip_hdls_pass_;						// 画像パス
+	int map_chip_width_;										// マップチップの幅
+	int map_chip_height_;										// マップチップの高さ
+	int map_chip_all_size_;										// マップチップの総フレーム数
+	int map_chip_x_size_;										// マップチップの横フレーム数
+	int map_chip_y_size_;										// マップチップの縦フレーム数
+	int* gpc_map_chip_hdls_;									// 画像データ格納
+
+	std::string map_data_csv_pass_;								// マップCSVデータのパス
+	std::vector< std::vector< int > > mapchip_data_;			// マップチップのデータ
+	std::vector< std::vector< int > > map_data_;				// マップデータ ( 敵やプレイヤーなどの位置を含む )
 
 };

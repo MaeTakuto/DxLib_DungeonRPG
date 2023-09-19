@@ -12,10 +12,10 @@ public:
 	void update(float delta_time) override;		// プレイヤーのアップデート
 	void draw() override;						// プレイヤーの描画
 
-	inline void setNextPos(tnl::Vector3& next_pos) { next_pos_ = next_pos; }			// プレイヤーの次の位置をセット。
+	inline void setNextPos(tnl::Vector3& next_pos) { next_pos_ = next_pos; }		// プレイヤーの次の位置をセット。
 	inline tnl::Vector3& getPos() override { return pos_; }							// プレイヤーの現在の位置を返す。
-	inline tnl::Vector3& getNextPos() override { return next_pos_; }					// プレイヤーの次の位置を返す。
-	inline bool getActionFlg() override { return action_flg_; }						// プレイヤーが行動したかを返す。
+	inline tnl::Vector3& getNextPos() override { return next_pos_; }				// プレイヤーの次の位置を返す。
+	inline CharaAct getAct() override { return act_; }						// プレイヤーが行動したかを返す。
 	inline void setColFlg(bool col_flg) override { col_flg_ = col_flg; }			// 当たり判定のフラグをセット
 
 private:

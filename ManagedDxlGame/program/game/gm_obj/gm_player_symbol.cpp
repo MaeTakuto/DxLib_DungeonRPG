@@ -58,7 +58,7 @@ PlayerSymbol::PlayerSymbol() {
 	col_flg_ = false;
 
 	dir_ = CharaDir::DIR_DOWN;
-	action_flg_ = false;
+	act_ = CharaAct::WAIT;
 }
 
 // デストラクタ
@@ -88,6 +88,10 @@ void PlayerSymbol::draw() {
 
 // 待機状態
 bool PlayerSymbol::seqIdle(const float delta_time) {
+
+	if (act_ == CharaAct::END) {
+		act_ = CharaAct::WAIT;
+	}
 
 	// Aキー（左移動）
 	if (tnl::Input::IsKeyDown(eKeys::KB_A)) {
@@ -134,7 +138,7 @@ bool PlayerSymbol::seqCheckWall(const float delta_time) {
 	}
 	else {
 		sequence_.change(&PlayerSymbol::seqMove);
-		action_flg_ = true;
+		act_ = CharaAct::BEGIN;
 	}
 
 	return true;
@@ -143,9 +147,7 @@ bool PlayerSymbol::seqCheckWall(const float delta_time) {
 // 移動状態
 bool PlayerSymbol::seqMove(const float delta_time) {
 
-	if (sequence_.isStart()) {
-		action_flg_ = false;
-	}
+	act_ = CharaAct::ACT;
 
 	if ( abs(next_pos_.x - pos_.x) > 0.1f || abs(next_pos_.y - pos_.y) > 0.1f ) {
 		//tnl::DebugTrace("pos_ = %.2f\n", pos_.length());
@@ -154,6 +156,7 @@ bool PlayerSymbol::seqMove(const float delta_time) {
 	}
 	else {
 		pos_ = next_pos_;
+		act_ = CharaAct::END;
 		sequence_.change(&PlayerSymbol::seqIdle);
 	}
 	
