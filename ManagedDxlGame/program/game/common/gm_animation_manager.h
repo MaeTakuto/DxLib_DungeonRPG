@@ -8,22 +8,22 @@ public:
 	static void Destroy();						// インスタンスを削除
 
 	// アニメーションのロード
-	int* loadAnimation(std::string& anim_hdl_pass, 
+	std::vector<int> loadAnimation(const std::string& anim_hdl_path, 
 		int all_size, int x_size, int y_size, int anim_hdl_width, int anim_hdl_height);
 
 	// アニメーションの削除
-	void deleteAnimation(std::string& anim_hdl_pass, int all_size);
+	void deleteAnimation(const std::string& anim_hdl_path, int all_size);
 
 private:
 	AnimationManager();							
 	~AnimationManager();
 
 	// アニメーションハンドルの保存先
-	std::unordered_map< std::string, int* > 
+	std::unordered_map< std::string, std::vector<int> > 
 		anim_hdl_container_;
 
 	// アニメーションの作成
-	int* createAnimation(std::string& anim_hdl_pass,
+	std::vector<int> createAnimation(const std::string& anim_hdl_path,
 		int all_size, int x_size, int y_size, int anim_hdl_width, int anim_hdl_height);
 
 };

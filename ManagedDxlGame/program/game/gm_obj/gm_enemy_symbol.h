@@ -24,9 +24,7 @@ private:
 		= tnl::Sequence<EnemySymbol>(this, &EnemySymbol::seqIdle);
 
 	bool seqIdle(const float delta_time);		// ‘Ò‹@ó‘Ô
-	// bool seqCheckWall(const float delta_time);	// “–‚½‚è”»’è‚ÌŠm”F
 	bool seqAction(const float delta_time);		// ˆÚ“®ó‘Ô
-	// bool seqDirChange(const float delta_time);	// •ûŒü“]Š·
 
 	void move();								// ˆÚ“®ˆ—
 	void dirChange();							// •ûŒü“]Š·ˆ—

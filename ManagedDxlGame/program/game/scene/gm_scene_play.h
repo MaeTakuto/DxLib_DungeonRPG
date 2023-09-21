@@ -1,5 +1,5 @@
 #pragma once
-#include "../common/gm_scene_base.h"
+#include "../base/gm_scene_base.h"
 #include "../gm_obj/gm_player_symbol.h"
 #include "../gm_obj/gm_enemy_symbol.h"
 

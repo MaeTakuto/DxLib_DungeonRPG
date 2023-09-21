@@ -42,9 +42,7 @@ protected:
 	tnl::Vector3 next_pos_;				// 移動先の位置
 
 	std::vector< std::vector < int > >
-		chara_anim_hdls_;			// キャラの画像
-
-	int** p_chara_anim_hdls_;		// キャラの画像
+		chara_anim_hdls_;				// キャラのアニメーション
 
 	bool col_flg_;						// 衝突判定
 

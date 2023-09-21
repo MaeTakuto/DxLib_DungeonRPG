@@ -110,7 +110,9 @@ void ScenePlay::update(float delta_time) {
 
 			enemy_symbol_[i]->update(delta_time);
 
+			// s“®ŠJŽnŽž
 			if (enemy_symbol_[i]->getAct() == CharaAct::BEGIN) {
+
 				// “–‚½‚è”»’è
 				if (getMapNum(enemy_symbol_[i]->getNextPos()) == MAP_PLAYER_NUM) {
 					enemy_symbol_[i]->setColFlg(true);

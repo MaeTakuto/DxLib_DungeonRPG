@@ -1,7 +1,7 @@
 #include "../../dxlib_ext/dxlib_ext.h"
 #include "../gm_main.h"
 #include "gm_manager.h"
-#include "gm_scene_base.h"
+#include "../base/gm_scene_base.h"
 
 
 // コンストラクタ

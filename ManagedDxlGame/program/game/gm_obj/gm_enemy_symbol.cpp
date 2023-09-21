@@ -7,29 +7,28 @@
 
 // コンストラクタ
 EnemySymbol::EnemySymbol(tnl::Vector3 pos) {
-	// キャラの画像ロード
+	// キャラの画像データロード
 	chara_anim_hdls_data_ = tnl::LoadCsv("csv/enemy_gpc_pass.csv");
 
-	// ダブルポインタの場合
-	p_chara_anim_hdls_ = new int* [ static_cast<int>( CharaDir::DIR_MAX ) ];
+	// アニメーションの取得
+	chara_anim_hdls_.resize(static_cast<int>(CharaDir::DIR_MAX));
 
-	for (int i = 0; i < static_cast<int>( CharaDir::DIR_MAX ); ++i) {
-		p_chara_anim_hdls_[i] = new int[3];
-	}
+	for (int i = 0; i < static_cast<int>(CharaDir::DIR_MAX); ++i) {
 
-	for (int i = 0; i < static_cast<int>( CharaDir::DIR_MAX ); ++i) {
-		p_chara_anim_hdls_[i] = AnimationManager::GetInstance()->loadAnimation(
+		chara_anim_hdls_[i].resize(chara_anim_hdls_data_[1][i].getInt());
+
+		chara_anim_hdls_[i] = AnimationManager::GetInstance()->loadAnimation(
 			chara_anim_hdls_data_[0][i].getString(),
 			chara_anim_hdls_data_[1][i].getInt(),
 			chara_anim_hdls_data_[2][i].getInt(),
 			chara_anim_hdls_data_[3][i].getInt(),
 			GameManager::GPC_CHIP_WIDTH_SIZE,
-			GameManager::GPC_CHIP_HEIGHT_SIZE
-		);
+			GameManager::GPC_CHIP_HEIGHT_SIZE);
 	}
 
-	tnl::DebugTrace("pass = %x\n", p_chara_anim_hdls_[1][1]);
+	tnl::DebugTrace("pass = %x\n", chara_anim_hdls_[1][1]);
 
+	// 位置などの初期化
 	pos_ = pos;
 	next_pos_ = pos_;
 
@@ -40,10 +39,6 @@ EnemySymbol::EnemySymbol(tnl::Vector3 pos) {
 // デストラクタ
 EnemySymbol::~EnemySymbol() {
 
-	for (int i = 0; i < static_cast<int>( CharaDir:: DIR_MAX ); ++i) {
-		delete[] p_chara_anim_hdls_[i];
-	}
-	delete[] p_chara_anim_hdls_;
 }
 
 // アップデート
@@ -55,7 +50,7 @@ void EnemySymbol::update(float delta_time) {
 // 描画
 void EnemySymbol::draw() {
 
-	DrawGraph(pos_.x * 32, pos_.y * 32, p_chara_anim_hdls_[ static_cast<int>( dir_ ) ][ANIM_IDLE], true);
+	DrawGraph(pos_.x * 32, pos_.y * 32, chara_anim_hdls_[ static_cast<int>( dir_ ) ][ANIM_IDLE], true);
 }
 
 // 待機状態
@@ -87,17 +82,6 @@ bool EnemySymbol::seqIdle(const float delta_time) {
 	return true;
 }
 
-/*
-// 当たり判定を確認状態
-bool EnemySymbol::seqCheckWall(const float delta_time) {
-
-	next_pos_.y += 1;
-	sequence_.change(&EnemySymbol::seqMove);
-
-	return true;
-}
-*/
-
 // 移動状態
 bool EnemySymbol::seqAction(const float delta_time) {
 	
@@ -115,14 +99,6 @@ bool EnemySymbol::seqAction(const float delta_time) {
 
 	return true;
 }
-
-/*
-// 方向転換状態
-bool EnemySymbol::seqDirChange(const float delta_time) {
-
-	return true;
-}
-*/
 
 // 移動
 void EnemySymbol::move() {

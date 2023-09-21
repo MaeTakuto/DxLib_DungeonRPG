@@ -149,9 +149,6 @@
     <ClCompile Include="program\game\common\gm_manager.cpp">
       <Filter>program\[003] game\common</Filter>
     </ClCompile>
-    <ClCompile Include="program\game\common\gm_scene_base.cpp">
-      <Filter>program\[003] game\common</Filter>
-    </ClCompile>
     <ClCompile Include="program\game\scene\gm_scene_play.cpp">
       <Filter>program\[003] game\scene</Filter>
     </ClCompile>
@@ -165,6 +162,12 @@
       <Filter>program\[003] game\gm_obj</Filter>
     </ClCompile>
     <ClCompile Include="program\game\common\gm_animation_manager.cpp">
+      <Filter>program\[003] game\common</Filter>
+    </ClCompile>
+    <ClCompile Include="program\game\base\gm_scene_base.cpp">
+      <Filter>program\[003] game\base</Filter>
+    </ClCompile>
+    <ClCompile Include="program\game\common\gm_graphic_manager.cpp">
       <Filter>program\[003] game\common</Filter>
     </ClCompile>
   </ItemGroup>
@@ -272,9 +275,6 @@
     <ClInclude Include="program\game\common\gm_manager.h">
       <Filter>program\[003] game\common</Filter>
     </ClInclude>
-    <ClInclude Include="program\game\common\gm_scene_base.h">
-      <Filter>program\[003] game\common</Filter>
-    </ClInclude>
     <ClInclude Include="program\game\scene\gm_scene_play.h">
       <Filter>program\[003] game\scene</Filter>
     </ClInclude>
@@ -288,6 +288,12 @@
       <Filter>program\[003] game\gm_obj</Filter>
     </ClInclude>
     <ClInclude Include="program\game\common\gm_animation_manager.h">
+      <Filter>program\[003] game\common</Filter>
+    </ClInclude>
+    <ClInclude Include="program\game\base\gm_scene_base.h">
+      <Filter>program\[003] game\base</Filter>
+    </ClInclude>
+    <ClInclude Include="program\game\common\gm_graphic_manager.h">
       <Filter>program\[003] game\common</Filter>
     </ClInclude>
   </ItemGroup>

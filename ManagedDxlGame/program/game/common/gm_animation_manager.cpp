@@ -10,6 +10,14 @@ AnimationManager::AnimationManager() {
 // デストラクタ
 AnimationManager::~AnimationManager() {
 	
+	// アニメーション削除
+	for ( auto it = anim_hdl_container_.begin(); it != anim_hdl_container_.end(); ++it ) {
+		for ( int i = 0; i < it->second.size(); ++i ) {
+			DeleteGraph(it->second[i]);
+		}
+	}
+
+	anim_hdl_container_.clear();
 }
 
 // インスタンスを返す。
@@ -28,39 +36,41 @@ void AnimationManager::Destroy() {
 }
 
 // アニメーションのロード
-int* AnimationManager::loadAnimation(std::string& anim_hdl_pass, 
+std::vector<int> AnimationManager::loadAnimation(const std::string& anim_hdl_path, 
 	int all_size, int x_size, int y_size, int anim_hdl_width, int anim_hdl_height) {
 
-	auto it = anim_hdl_container_.find(anim_hdl_pass);
+	auto it = anim_hdl_container_.find(anim_hdl_path);
 
 	// すでにアニメーションのパスが存在した場合
-	if (it != anim_hdl_container_.end()) return anim_hdl_container_[anim_hdl_pass];
+	if (it != anim_hdl_container_.end()) return anim_hdl_container_[anim_hdl_path];
 
-	auto anim_hdl = createAnimation(anim_hdl_pass, all_size, x_size, y_size, anim_hdl_width, anim_hdl_height);
-	anim_hdl_container_.insert(make_pair(anim_hdl_pass, anim_hdl));
+	auto anim_hdl = createAnimation(anim_hdl_path, all_size, x_size, y_size, anim_hdl_width, anim_hdl_height);
+	anim_hdl_container_.insert(make_pair(anim_hdl_path, anim_hdl));
 
 	return anim_hdl;
 }
 
 // アニメーションの削除
-void AnimationManager::deleteAnimation(std::string& anim_hdl_pass, int all_size) {
+void AnimationManager::deleteAnimation(const std::string& anim_hdl_path, int all_size) {
 
-	auto it = anim_hdl_container_.find(anim_hdl_pass);
+	auto it = anim_hdl_container_.find(anim_hdl_path);
 
 	if (it != anim_hdl_container_.end()) {
 		for(int i = 0; i < all_size; ++i) 
 		DeleteGraph(it->second[i]);
 	}
+
+	anim_hdl_container_.erase(anim_hdl_path);
 }
 
 // アニメーションのロード
-int* AnimationManager::createAnimation(std::string& anim_hdl_pass,
+std::vector<int> AnimationManager::createAnimation(const std::string& anim_hdl_path,
 	int all_size, int x_size, int y_size, int anim_hdl_width, int anim_hdl_height) {
 
 	int* anim_hdl = new int[all_size];
 
 	LoadDivGraph(
-		anim_hdl_pass.c_str(),
+		anim_hdl_path.c_str(),
 		all_size,
 		x_size,
 		y_size,
@@ -69,5 +79,11 @@ int* AnimationManager::createAnimation(std::string& anim_hdl_pass,
 		anim_hdl
 		);
 
-	return anim_hdl;
+	std::vector<int> vec(all_size);
+
+	for (int i = 0; i < all_size; ++i) {
+		vec[i] = anim_hdl[i];
+	}
+
+	return vec;
 }
