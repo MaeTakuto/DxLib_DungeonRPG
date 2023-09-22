@@ -37,12 +37,17 @@ public:
 
 protected:
 	const float MOVE_SPEED = 0.25f;		// 移動速度
+	const float WALK_TIME = 0.25f;
+	const float RUN_TIME = 0.05f;
 
 	tnl::Vector3 pos_;					// 位置情報
 	tnl::Vector3 next_pos_;				// 移動先の位置
 
 	std::vector< std::vector < int > >
 		chara_anim_hdls_;				// キャラのアニメーション
+
+	int anim_frame_;					// アニメーションフレーム
+	float anim_time_count_;				// アニメーションの時間
 
 	bool col_flg_;						// 衝突判定
 

@@ -31,6 +31,8 @@ EnemySymbol::EnemySymbol(tnl::Vector3 pos) {
 	// 位置などの初期化
 	pos_ = pos;
 	next_pos_ = pos_;
+	anim_frame_ = ANIM_IDLE;
+	anim_time_count_ = 0.0f;
 
 	dir_ = CharaDir::DIR_DOWN;
 	act_ = CharaAct::WAIT;
@@ -50,14 +52,26 @@ void EnemySymbol::update(float delta_time) {
 // 描画
 void EnemySymbol::draw(const tnl::Vector3& camera_pos) {
 
-	tnl::Vector3 draw_pos = tnl::Vector3(pos_.x * GameManager::GPC_DRAW_CHIP_SIZE, pos_.y * GameManager::GPC_DRAW_CHIP_SIZE, 0) - camera_pos + tnl::Vector3(DXE_WINDOW_WIDTH >> 1, DXE_WINDOW_HEIGHT >> 1, 0);
+	tnl::Vector3 draw_pos = tnl::Vector3( pos_.x * GameManager::GPC_DRAW_CHIP_SIZE, pos_.y * GameManager::GPC_DRAW_CHIP_SIZE, 0 )
+		- camera_pos + tnl::Vector3( DXE_WINDOW_WIDTH >> 1, DXE_WINDOW_HEIGHT >> 1, 0 );
 
-	DrawExtendGraph(draw_pos.x, draw_pos.y, draw_pos.x + GameManager::GPC_DRAW_CHIP_SIZE, draw_pos.y + GameManager::GPC_DRAW_CHIP_SIZE, chara_anim_hdls_[static_cast<int>(dir_)][ANIM_IDLE], true);
+	DrawExtendGraph(draw_pos.x, draw_pos.y, draw_pos.x + GameManager::GPC_DRAW_CHIP_SIZE, draw_pos.y + GameManager::GPC_DRAW_CHIP_SIZE,
+		chara_anim_hdls_[static_cast<int>(dir_)][anim_frame_], true);
 	// DrawRotaGraph(draw_pos.x, draw_pos.y, 2.0f, 0, chara_anim_hdls_[static_cast<int>(dir_)][ANIM_IDLE], true);
 }
 
 // 待機状態
 bool EnemySymbol::seqIdle(const float delta_time) {
+
+	anim_time_count_ += delta_time;
+
+	// アニメーションフレーム更新
+	if (anim_time_count_ > WALK_TIME) {
+		anim_frame_++;
+		anim_frame_ %= chara_anim_hdls_data_[1][static_cast<int>(dir_)].getInt();
+		anim_time_count_ = 0.0f;
+	}
+
 	if ( act_ == CharaAct::END ) {
 		act_ = CharaAct::WAIT;
 	}
@@ -97,14 +111,23 @@ bool EnemySymbol::seqAction(const float delta_time) {
 		next_pos_ = pos_;
 	}
 	else {
-		move();
+		move(delta_time);
 	}
 
 	return true;
 }
 
 // 移動
-void EnemySymbol::move() {
+void EnemySymbol::move(const float delta_time) {
+
+	anim_time_count_ += delta_time;
+
+	// アニメーションフレーム更新
+	if (anim_time_count_ > RUN_TIME) {
+		anim_frame_++;
+		anim_frame_ %= chara_anim_hdls_data_[1][static_cast<int>(dir_)].getInt();
+		anim_time_count_ = 0.0f;
+	}
 
 	if (abs(next_pos_.x - pos_.x) > 0.1f || abs(next_pos_.y - pos_.y) > 0.1f) {
 		//tnl::DebugTrace("pos_ = %.2f\n", pos_.length());

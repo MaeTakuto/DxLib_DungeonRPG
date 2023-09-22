@@ -26,7 +26,7 @@ private:
 	bool seqIdle(const float delta_time);		// ‘Ò‹@ó‘Ô
 	bool seqAction(const float delta_time);		// ˆÚ“®ó‘Ô
 
-	void move();								// ˆÚ“®ˆ—
+	void move(const float delta_time);								// ˆÚ“®ˆ—
 	void dirChange();							// •ûŒü“]Š·ˆ—
 
 };
