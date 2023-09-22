@@ -8,8 +8,8 @@ public:
 	static constexpr int TITLE_FONT_SIZE = 80;								// タイトルのフォントサイズ
 	static constexpr int NORMAL_FONT_SIZE = 30;								// ノーマルのフォントサイズ
 
-	static constexpr int GPC_CHIP_WIDTH_SIZE = 32;							// 画像横のチップサイズ
-	static constexpr int GPC_CHIP_HEIGHT_SIZE = 32;							// 画像縦のチップサイズ
+	static constexpr int GPC_CHIP_SIZE = 32;								// 画像横のチップサイズ
+	static constexpr int GPC_DRAW_CHIP_SIZE = GPC_CHIP_SIZE * 2;							// 表示するチップサイズ
 
 
 	static GameManager* GetInstance(SceneBase* start_scene = nullptr);		// ゲームマネージャーのアドレスを返す

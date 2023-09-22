@@ -172,6 +172,7 @@
     <ClCompile Include="program\game\common\gm_graphic_manager.cpp" />
     <ClCompile Include="program\game\common\gm_manager.cpp" />
     <ClCompile Include="program\game\gm_main.cpp" />
+    <ClCompile Include="program\game\gm_obj\gm_camera.cpp" />
     <ClCompile Include="program\game\gm_obj\gm_enemy_symbol.cpp" />
     <ClCompile Include="program\game\gm_obj\gm_player_symbol.cpp" />
     <ClCompile Include="program\game\scene\gm_scene_play.cpp" />
@@ -210,6 +211,7 @@
     <ClInclude Include="program\game\common\gm_graphic_manager.h" />
     <ClInclude Include="program\game\common\gm_manager.h" />
     <ClInclude Include="program\game\gm_main.h" />
+    <ClInclude Include="program\game\gm_obj\gm_camera.h" />
     <ClInclude Include="program\game\gm_obj\gm_enemy_symbol.h" />
     <ClInclude Include="program\game\gm_obj\gm_player_symbol.h" />
     <ClInclude Include="program\game\scene\gm_scene_play.h" />

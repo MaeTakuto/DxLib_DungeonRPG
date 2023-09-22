@@ -28,7 +28,7 @@ public:
 	virtual ~CharacterSymbol() {};
 
 	virtual void update(float delta_time) = 0;
-	virtual void draw() = 0;
+	virtual void draw(const tnl::Vector3& camera_pos) = 0;
 
 	virtual tnl::Vector3& getPos() = 0;			// キャラの現在の位置を返す。
 	virtual tnl::Vector3& getNextPos() = 0;		// キャラの次の位置を返す。

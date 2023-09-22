@@ -22,8 +22,8 @@ EnemySymbol::EnemySymbol(tnl::Vector3 pos) {
 			chara_anim_hdls_data_[1][i].getInt(),
 			chara_anim_hdls_data_[2][i].getInt(),
 			chara_anim_hdls_data_[3][i].getInt(),
-			GameManager::GPC_CHIP_WIDTH_SIZE,
-			GameManager::GPC_CHIP_HEIGHT_SIZE);
+			GameManager::GPC_CHIP_SIZE,
+			GameManager::GPC_CHIP_SIZE);
 	}
 
 	tnl::DebugTrace("pass = %x\n", chara_anim_hdls_[1][1]);
@@ -48,9 +48,12 @@ void EnemySymbol::update(float delta_time) {
 }
 
 // ï`âÊ
-void EnemySymbol::draw() {
+void EnemySymbol::draw(const tnl::Vector3& camera_pos) {
 
-	DrawGraph(pos_.x * 32, pos_.y * 32, chara_anim_hdls_[ static_cast<int>( dir_ ) ][ANIM_IDLE], true);
+	tnl::Vector3 draw_pos = tnl::Vector3(pos_.x * GameManager::GPC_DRAW_CHIP_SIZE, pos_.y * GameManager::GPC_DRAW_CHIP_SIZE, 0) - camera_pos + tnl::Vector3(DXE_WINDOW_WIDTH >> 1, DXE_WINDOW_HEIGHT >> 1, 0);
+
+	DrawExtendGraph(draw_pos.x, draw_pos.y, draw_pos.x + GameManager::GPC_DRAW_CHIP_SIZE, draw_pos.y + GameManager::GPC_DRAW_CHIP_SIZE, chara_anim_hdls_[static_cast<int>(dir_)][ANIM_IDLE], true);
+	// DrawRotaGraph(draw_pos.x, draw_pos.y, 2.0f, 0, chara_anim_hdls_[static_cast<int>(dir_)][ANIM_IDLE], true);
 }
 
 // ë“ã@èÛë‘

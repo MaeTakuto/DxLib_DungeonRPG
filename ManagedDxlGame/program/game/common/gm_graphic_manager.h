@@ -4,16 +4,16 @@
 
 class GraphicManager {
 public:
-	static GraphicManager* GetInstance();
-	static void Destroy();
+	static GraphicManager* GetInstance();					// インスタンスを返す。
+	static void Destroy();									// インスタンスの削除。
 
-	int loadGraph(const std::string& gpc_hdl_path);
-	void deleteGraph(const std::string& gpc_hdl_path);
+	int loadGraph(const std::string& gpc_hdl_path);			// 画像のロード、画像のアドレスを渡す。
+	void deleteGraph(const std::string& gpc_hdl_path);		// 画像の削除
  
 private:
 	GraphicManager();
 	~GraphicManager();
 
-	std::unordered_map<std::string, int> gpc_hdl_container_;
+	std::unordered_map<std::string, int> gpc_hdl_container_;	// 画像データの格納
 
 };

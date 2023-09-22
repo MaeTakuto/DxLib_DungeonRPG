@@ -2,6 +2,7 @@
 #include "../base/gm_scene_base.h"
 #include "../gm_obj/gm_player_symbol.h"
 #include "../gm_obj/gm_enemy_symbol.h"
+#include "../gm_obj/gm_camera.h"
 
 
 class ScenePlay : public SceneBase {
@@ -42,6 +43,8 @@ public:
 private:
 	PlayerSymbol* player_symbol_ = nullptr;						// プレイヤーシンボル
 	EnemySymbol* enemy_symbol_[ENEMY_MAX_NUM] = { nullptr };	// エネミーシンボル
+
+	Camera* camera_ = nullptr;
 
 	bool action_flg_ = false;
 

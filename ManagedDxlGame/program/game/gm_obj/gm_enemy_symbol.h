@@ -10,7 +10,7 @@ public:
 	~EnemySymbol();
 
 	void update(float delta_time) override;
-	void draw() override;
+	void draw(const tnl::Vector3& camera_pos) override;
 
 	inline tnl::Vector3& getPos() override { return pos_; }							// エネミーの現在の位置を返す。
 	inline tnl::Vector3& getNextPos() override { return next_pos_; }				// エネミーの次の位置を返す。

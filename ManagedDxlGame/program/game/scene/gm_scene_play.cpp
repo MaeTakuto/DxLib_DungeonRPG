@@ -6,9 +6,10 @@
 // コンストラクタ
 ScenePlay::ScenePlay() {
 	player_symbol_ = new PlayerSymbol();
-	enemy_symbol_[0] = new EnemySymbol(tnl::Vector3{2, 1, 0});
-	enemy_symbol_[1] = new EnemySymbol(tnl::Vector3{3, 1, 0});
-	enemy_symbol_[2] = new EnemySymbol(tnl::Vector3{4, 1, 0});
+	enemy_symbol_[0] = new EnemySymbol(tnl::Vector3{6, 5, 0});
+	enemy_symbol_[1] = new EnemySymbol(tnl::Vector3{7, 5, 0});
+	enemy_symbol_[2] = new EnemySymbol(tnl::Vector3{8, 5, 0});
+	camera_ = new Camera(player_symbol_->getPos());
 
 	// マップチップの画像のロード
 	gpc_map_chip_hdls_pass_ = "graphics/mapchip.png";
@@ -24,8 +25,8 @@ ScenePlay::ScenePlay() {
 		map_chip_all_size_, 
 		map_chip_x_size_,
 		map_chip_y_size_,
-		map_chip_width_,
-		map_chip_height_,
+		GameManager::GPC_CHIP_SIZE,
+		GameManager::GPC_CHIP_SIZE,
 		gpc_map_chip_hdls_ );
 
 	// マップデータのロード
@@ -94,9 +95,11 @@ void ScenePlay::update(float delta_time) {
 			setMapData(player_symbol_->getPos(), MAP_GROUND_NUM);
 			setMapData(player_symbol_->getNextPos(), MAP_PLAYER_NUM);
 		}
+
+		if (camera_) camera_->update(player_symbol_->getPos());
 	}
 
-	// エネミーのアップデート
+	// 各エネミーのアップデート
 	for (int i = 0; i < ENEMY_MAX_NUM; ++i) {
 		if (enemy_symbol_[i]) {
 
@@ -134,6 +137,7 @@ void ScenePlay::update(float delta_time) {
 	}
 
 
+
 	/*
 	for (int i = 0; i < ENEMY_MAX_NUM; ++i) {
 		if (enemy_symbol_[i]) {
@@ -167,14 +171,18 @@ void ScenePlay::draw() {
 	// マップの表示
 	for (int y = 0; y < mapchip_data_.size(); ++y) {
 		for (int x = 0; x < mapchip_data_[y].size(); ++x) {
-			DrawGraph(x * map_chip_width_, y * map_chip_height_, gpc_map_chip_hdls_[ mapchip_data_[y][x] ], true);
+			tnl::Vector3 draw_pos = tnl::Vector3(x * GameManager::GPC_DRAW_CHIP_SIZE, y * GameManager::GPC_DRAW_CHIP_SIZE, 0)
+				- camera_->getPos() + tnl::Vector3(DXE_WINDOW_WIDTH >> 1, DXE_WINDOW_HEIGHT >> 1, 0);
+			DrawExtendGraph(draw_pos.x, draw_pos.y, draw_pos.x + GameManager::GPC_DRAW_CHIP_SIZE, draw_pos.y + GameManager::GPC_DRAW_CHIP_SIZE, gpc_map_chip_hdls_[mapchip_data_[y][x]], true);
+			// DrawRotaGraph(draw_pos.x,  draw_pos.y, 2.0f, 0,  gpc_map_chip_hdls_[ mapchip_data_[y][x] ], true);
 		}
 	}
 
-	if (player_symbol_) player_symbol_->draw();
+	if (player_symbol_) player_symbol_->draw(camera_->getPos());
 
 	for (int i = 0; i < ENEMY_MAX_NUM; ++i) {
-		if (enemy_symbol_) enemy_symbol_[i]->draw();
+		if (enemy_symbol_) enemy_symbol_[i]->draw(camera_->getPos());
 	}
+	DrawStringEx(10, 30, -1, "camera_x = %.2f, camera_y = %.2f", camera_->getPos().x, camera_->getPos().y);
 }
 
