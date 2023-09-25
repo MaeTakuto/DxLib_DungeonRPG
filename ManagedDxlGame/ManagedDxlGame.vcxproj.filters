@@ -33,9 +33,6 @@
     <Filter Include="program\[003] game\base">
       <UniqueIdentifier>{43074c3c-553e-4c41-90fa-5f3fd3b55db6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="program\[003] game\ui">
-      <UniqueIdentifier>{6e87ee16-cfa4-4fd9-b065-cecb16e7083b}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ManagedDxlGame.cpp">
@@ -176,24 +173,6 @@
     <ClCompile Include="program\game\gm_obj\gm_camera.cpp">
       <Filter>program\[003] game\gm_obj</Filter>
     </ClCompile>
-    <ClCompile Include="program\game\base\ui_window_base.cpp">
-      <Filter>program\[003] game\base</Filter>
-    </ClCompile>
-    <ClCompile Include="program\game\base\ui_select_cmd_base.cpp">
-      <Filter>program\[003] game\base</Filter>
-    </ClCompile>
-    <ClCompile Include="program\game\ui\main_menu_ui.cpp">
-      <Filter>program\[003] game\ui</Filter>
-    </ClCompile>
-    <ClCompile Include="program\game\ui\two_choise_ui.cpp">
-      <Filter>program\[003] game\ui</Filter>
-    </ClCompile>
-    <ClCompile Include="program\game\ui\message_ui.cpp">
-      <Filter>program\[003] game\ui</Filter>
-    </ClCompile>
-    <ClCompile Include="program\game\ui\menu_ui_commander.cpp">
-      <Filter>program\[003] game\ui</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ManagedDxlGame.rc">
@@ -322,24 +301,6 @@
     </ClInclude>
     <ClInclude Include="program\game\gm_obj\gm_camera.h">
       <Filter>program\[003] game\gm_obj</Filter>
-    </ClInclude>
-    <ClInclude Include="program\game\base\ui_window_base.h">
-      <Filter>program\[003] game\base</Filter>
-    </ClInclude>
-    <ClInclude Include="program\game\base\ui_select_cmd_base.h">
-      <Filter>program\[003] game\base</Filter>
-    </ClInclude>
-    <ClInclude Include="program\game\ui\main_menu_ui.h">
-      <Filter>program\[003] game\ui</Filter>
-    </ClInclude>
-    <ClInclude Include="program\game\ui\two_choise_ui.h">
-      <Filter>program\[003] game\ui</Filter>
-    </ClInclude>
-    <ClInclude Include="program\game\ui\message_ui.h">
-      <Filter>program\[003] game\ui</Filter>
-    </ClInclude>
-    <ClInclude Include="program\game\ui\menu_ui_commander.h">
-      <Filter>program\[003] game\ui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

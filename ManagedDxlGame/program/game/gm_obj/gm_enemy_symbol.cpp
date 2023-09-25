@@ -99,7 +99,7 @@ bool EnemySymbol::seqIdle(const float delta_time) {
 	return true;
 }
 
-// s“®ó‘Ô
+// ˆÚ“®ó‘Ô
 bool EnemySymbol::seqAction(const float delta_time) {
 	
 	act_ = CharaAct::ACT;

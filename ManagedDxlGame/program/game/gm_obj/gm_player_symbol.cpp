@@ -75,7 +75,7 @@ bool PlayerSymbol::seqIdle(const float delta_time) {
 		anim_time_count_ = 0.0f;
 	}
 
-	if (act_ != CharaAct::WAIT) {
+	if (act_ == CharaAct::END) {
 		act_ = CharaAct::WAIT;
 	}
 

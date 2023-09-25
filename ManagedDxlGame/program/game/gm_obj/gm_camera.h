@@ -16,7 +16,7 @@ private:
 	const float MAX_UP_POS = 8 * GameManager::GPC_DRAW_CHIP_SIZE;
 	const float MAX_DOWN_POS = 22 * GameManager::GPC_DRAW_CHIP_SIZE;
 	const float MAX_LEFT_POS = 12 * GameManager::GPC_DRAW_CHIP_SIZE;
-	const float MAX_RIGHT_POS = 30 * GameManager::GPC_DRAW_CHIP_SIZE;
+	// const float MAX_RIGHT_POS;
 
 	tnl::Vector3 pos_;
 
