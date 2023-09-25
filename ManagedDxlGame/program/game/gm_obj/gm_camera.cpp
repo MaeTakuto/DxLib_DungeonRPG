@@ -22,5 +22,6 @@ void Camera::update(const tnl::Vector3 target_pos) {
 	if (pos_.y < MAX_UP_POS) pos_.y = MAX_UP_POS;
 	if (pos_.y > MAX_DOWN_POS) pos_.y = MAX_DOWN_POS;
 	if (pos_.x < MAX_LEFT_POS) pos_.x = MAX_LEFT_POS;
+	if (pos_.x > MAX_RIGHT_POS) pos_.x = MAX_RIGHT_POS;
 
 }

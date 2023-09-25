@@ -3,6 +3,7 @@
 #include "../gm_obj/gm_player_symbol.h"
 #include "../gm_obj/gm_enemy_symbol.h"
 #include "../gm_obj/gm_camera.h"
+#include "../ui/menu_ui_commander.h"
 
 
 class ScenePlay : public SceneBase {
@@ -12,8 +13,9 @@ public:
 
 	static constexpr int MAP_GROUND_NUM = 0;						// 床の番号
 	static constexpr int MAP_WALL_NUM = 1;							// 壁の番号
-	static constexpr int MAP_PLAYER_NUM = 2;						// プレイヤーの番号
-	static constexpr int MAP_ENEMY_NUM = 3;							// エネミーの番号
+	static constexpr int MAP_GOAL_NUM = 2;							// 壁の番号
+	static constexpr int MAP_PLAYER_NUM = 3;						// プレイヤーの番号
+	static constexpr int MAP_ENEMY_NUM = 4;							// エネミーの番号
 
 	static const int ENEMY_MAX_NUM = 3;								// エネミーの最大生成数
 
@@ -40,13 +42,17 @@ public:
 		map_data_[y][x] = num;
 	}
 
+	inline void setSelectUIFlg(bool flg) { select_ui_flg_ = flg; }	// セレクトUIのフラグセット
+
 private:
 	PlayerSymbol* player_symbol_ = nullptr;						// プレイヤーシンボル
 	EnemySymbol* enemy_symbol_[ENEMY_MAX_NUM] = { nullptr };	// エネミーシンボル
 
-	Camera* camera_ = nullptr;
+	Camera* camera_ = nullptr;									// カメラ
+	MenuUICommander* menu_ui_ = nullptr;						// メニューUI
 
-	bool action_flg_ = false;
+	bool action_flg_ = false;									// 
+	bool select_ui_flg_ = false;								// セレクトUIが表示フラグ
 
 	std::string gpc_map_chip_hdls_pass_;						// 画像パス
 	int map_chip_width_;										// マップチップの幅

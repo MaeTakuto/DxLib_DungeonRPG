@@ -10,13 +10,14 @@ ScenePlay::ScenePlay() {
 	enemy_symbol_[1] = new EnemySymbol(tnl::Vector3{7, 5, 0});
 	enemy_symbol_[2] = new EnemySymbol(tnl::Vector3{8, 5, 0});
 	camera_ = new Camera(player_symbol_->getPos());
+	menu_ui_ = new MenuUICommander();
 
 	// マップチップの画像のロード
-	gpc_map_chip_hdls_pass_ = "graphics/mapchip.png";
+	gpc_map_chip_hdls_pass_ = "graphics/mapchip2.png";
 
 	map_chip_width_ = 32;
 	map_chip_height_ = 32;
-	map_chip_x_size_ = 2;
+	map_chip_x_size_ = 3;
 	map_chip_y_size_ = 1;
 	map_chip_all_size_ = map_chip_x_size_ * map_chip_y_size_;
 	gpc_map_chip_hdls_ = new int[map_chip_all_size_];
@@ -74,69 +75,82 @@ ScenePlay::~ScenePlay() {
 
 	delete[] gpc_map_chip_hdls_;
 	gpc_map_chip_hdls_ = nullptr;
+
+	delete camera_;
+	camera_ = nullptr;
+
+	delete menu_ui_;
+	menu_ui_ = nullptr;
 }
 
 // シーンプレイのアップデート
 void ScenePlay::update(float delta_time) {
 
-	// プレイヤーのアップデート
-	if (player_symbol_) {
-		player_symbol_->update(delta_time);
 
-		// 当たり判定
-		if ( getMapNum(player_symbol_->getNextPos()) == MAP_WALL_NUM ) {
-			player_symbol_->setColFlg(true);
-		}
-		else if ( getMapNum(player_symbol_->getNextPos()) == MAP_ENEMY_NUM ) {
-			player_symbol_->setColFlg(true);
-		}
-		else {
-			// マップデータの更新
-			setMapData(player_symbol_->getPos(), MAP_GROUND_NUM);
-			setMapData(player_symbol_->getNextPos(), MAP_PLAYER_NUM);
-		}
+	// セレクトメニューが出ているかどうか
+	if (!select_ui_flg_) {
 
-		if (camera_) camera_->update(player_symbol_->getPos());
-	}
+		// プレイヤーのアップデート
+		if (player_symbol_) {
+			player_symbol_->update(delta_time);
 
-	// 各エネミーのアップデート
-	for (int i = 0; i < ENEMY_MAX_NUM; ++i) {
-		if (enemy_symbol_[i]) {
-
-			// 行動するかどうか
-			if (player_symbol_) {
-				if (player_symbol_->getAct() == CharaAct::BEGIN) {
-					enemy_symbol_[i]->setAct(CharaAct::BEGIN);
-					action_flg_ = true;
-				}
+			// 当たり判定
+			if (getMapNum(player_symbol_->getNextPos()) == MAP_WALL_NUM) {
+				player_symbol_->setColFlg(true);
+			}
+			else if (getMapNum(player_symbol_->getNextPos()) == MAP_ENEMY_NUM) {
+				player_symbol_->setColFlg(true);
+			}
+			else {
+				// マップデータの更新
+				setMapData(player_symbol_->getPos(), MAP_GROUND_NUM);
+				setMapData(player_symbol_->getNextPos(), MAP_PLAYER_NUM);
 			}
 
-			enemy_symbol_[i]->update(delta_time);
 
-			// 行動開始時
-			if (enemy_symbol_[i]->getAct() == CharaAct::BEGIN) {
+			// カメラアップデート
+			if (camera_) camera_->update(player_symbol_->getPos());
+		}
 
-				// 当たり判定
-				if (getMapNum(enemy_symbol_[i]->getNextPos()) == MAP_PLAYER_NUM) {
-					enemy_symbol_[i]->setColFlg(true);
-				}
-				else if (getMapNum(enemy_symbol_[i]->getNextPos()) == MAP_ENEMY_NUM) {
-					enemy_symbol_[i]->setColFlg(true);
+		// 各エネミーのアップデート
+		for (int i = 0; i < ENEMY_MAX_NUM; ++i) {
+			if (enemy_symbol_[i]) {
+
+				// 行動するかどうか
+				if (player_symbol_) {
+					if (player_symbol_->getAct() == CharaAct::BEGIN) {
+						enemy_symbol_[i]->setAct(CharaAct::BEGIN);
+						action_flg_ = true;
+					}
 				}
 
-				else if (getMapNum(enemy_symbol_[i]->getNextPos()) == MAP_WALL_NUM) {
-					enemy_symbol_[i]->setColFlg(true);
-				}
-				else {
-					// マップデータの更新
-					setMapData(enemy_symbol_[i]->getPos(), MAP_GROUND_NUM);
-					setMapData(enemy_symbol_[i]->getNextPos(), MAP_ENEMY_NUM);
+				enemy_symbol_[i]->update(delta_time);
+
+				// 行動開始時
+				if (enemy_symbol_[i]->getAct() == CharaAct::BEGIN) {
+
+					// 当たり判定
+					if (getMapNum(enemy_symbol_[i]->getNextPos()) == MAP_PLAYER_NUM) {
+						enemy_symbol_[i]->setColFlg(true);
+					}
+					else if (getMapNum(enemy_symbol_[i]->getNextPos()) == MAP_ENEMY_NUM) {
+						enemy_symbol_[i]->setColFlg(true);
+					}
+
+					else if (getMapNum(enemy_symbol_[i]->getNextPos()) == MAP_WALL_NUM) {
+						enemy_symbol_[i]->setColFlg(true);
+					}
+					else {
+						// マップデータの更新
+						setMapData(enemy_symbol_[i]->getPos(), MAP_GROUND_NUM);
+						setMapData(enemy_symbol_[i]->getNextPos(), MAP_ENEMY_NUM);
+					}
 				}
 			}
 		}
 	}
 
-
+	if (menu_ui_) menu_ui_->update(delta_time);
 
 	/*
 	for (int i = 0; i < ENEMY_MAX_NUM; ++i) {
@@ -183,6 +197,9 @@ void ScenePlay::draw() {
 	for (int i = 0; i < ENEMY_MAX_NUM; ++i) {
 		if (enemy_symbol_) enemy_symbol_[i]->draw(camera_->getPos());
 	}
-	DrawStringEx(10, 30, -1, "camera_x = %.2f, camera_y = %.2f", camera_->getPos().x, camera_->getPos().y);
+
+	if (menu_ui_) menu_ui_->draw();
+
+	DrawStringEx(10, 40, -1, "camera_x = %.2f, camera_y = %.2f", camera_->getPos().x, camera_->getPos().y);
 }
 

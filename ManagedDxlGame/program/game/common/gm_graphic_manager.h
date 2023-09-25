@@ -1,7 +1,9 @@
 #pragma once
+#include <string>
+#include <unordered_map>
 
 
-
+//
 class GraphicManager {
 public:
 	static GraphicManager* GetInstance();					// インスタンスを返す。
@@ -14,6 +16,6 @@ private:
 	GraphicManager();
 	~GraphicManager();
 
-	std::unordered_map<std::string, int> gpc_hdl_container_;	// 画像データの格納
+	std::unordered_map< std::string, int > gpc_hdl_container_;	// 画像データの格納
 
 };
